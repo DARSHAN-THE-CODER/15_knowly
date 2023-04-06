@@ -130,11 +130,35 @@ const joinClassByStudent = async (req, res) => {
     }
 }
 
+const addContent = async (req, res) => {
+    try {
+        const { classCode }= req.params;
+
+        const data = req.body.data;
+
+        const updateClass = await prisma.class.update({
+            where: {
+                classCode: classCode
+            },
+            data: {
+                content: data.content
+            }
+        });
+                    
+        res.status(200).json({ updateClass });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
 module.exports = {
     createClass,
     getAllClasses,
     getClassesUsingStudentId,
     getClassesUsingClassCode,
     getClassesUsingTeacherId,
-    joinClassByStudent
+    joinClassByStudent,
+    addContent,
 }

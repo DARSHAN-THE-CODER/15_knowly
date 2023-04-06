@@ -21,3 +21,13 @@ GET {{baseURL}}/teacher/1
 
 ### Student join class , using class code, student id
 POST {{baseURL}}/studentjoin/ABCD123/1
+
+### add content to class
+POST {{baseURL}}/addcontent/ABCD123
+Content-Type: application/json
+
+{
+    "data": {
+        "content": "Docker,Kubernetes,Jenkins,DynamoDB,Zookeeper, EC2 instance , S3 bucket"
+    }
+}

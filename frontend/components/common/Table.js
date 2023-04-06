@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useRouter } from 'next/router';
 
-const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30] }) => {
+const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30], viewBtn, routePath }) => {
 
     const router = useRouter();
 
@@ -39,7 +39,9 @@ const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30] }) => {
 
     const handleRowClick = (rowData) => {
         console.log(rowData);
-        router.push(`/dashboard/teacher/assignment/${rowData.classCode}`)
+        localStorage.setItem('classCode', rowData.classCode)
+        localStorage.setItem('classId', rowData.id)
+        router.push(`/dashboard/teacher/${routePath}/${rowData.classCode}`)
     };
 
 
@@ -99,14 +101,14 @@ const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30] }) => {
                                     className="px-3 py-1 text-white bg-blue-500 rounded"
                                     onClick={() => handleRowClick(row)}
                                 >
-                                    View 
+                                    {viewBtn} 
                                 </button>
-                                <button
+                                {/* <button
                                     className="px-3 py-1 text-white bg-red-500 rounded"
                                     onClick={() => handleRowDelete(row)}
                                 >
                                     Delete 
-                                </button>
+                                </button> */}
                             </td>
                         </tr>
                     ))}

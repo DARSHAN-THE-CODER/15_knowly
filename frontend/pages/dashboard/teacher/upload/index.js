@@ -29,9 +29,11 @@ function Data() {
         }
         )
     },[])
+
+
   return (
     <div className='h-[80vh]'>
-        <Table headers={headers} data={data} viewBtn={"Create assignment"} routePath={"assignment"} />
+        <Table headers={headers} data={data} viewBtn={"Upload Content"} routePath={"upload"} />
     </div>
   )
 }

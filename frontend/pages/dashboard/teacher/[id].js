@@ -33,7 +33,8 @@ function Teacher() {
     {
       title: "Upload notes",
       img: "",
-      button: "Proceed"
+      button: "Proceed",
+      path: "/dashboard/teacher/upload"
     }
   ]
 

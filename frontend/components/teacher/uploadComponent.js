@@ -4,9 +4,7 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const Upload = () => {
-  const [file, setFile] = useState(null);
-  const [text, setText] = useState("");
+const UploadComponent = ({ file, setFile, text, setText, handleSubmit }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -30,13 +28,12 @@ const Upload = () => {
           onChange={handleFileChange}
         />
       </div>
-      {file && (
-        <div className="mb-6">
-          <Document file={file}>
-            <Page pageNumber={1} />
-          </Document>
-        </div>
-      )}
+      <button
+        className="px-3 py-1 text-white bg-blue-500 rounded"
+        onClick={() => handleSubmit()}
+      >
+        Upload
+      </button>
       {text && (
         <div>
           <h2 className="text-xl font-bold mb-2">Text Contents:</h2>
@@ -47,4 +44,4 @@ const Upload = () => {
   );
 };
 
-export default Upload;
+export default UploadComponent;
