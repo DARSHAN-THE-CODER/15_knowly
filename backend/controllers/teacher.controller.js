@@ -23,6 +23,30 @@ const createTeacher = async (req, res) => {
     }
 }
 
+const teacherLogin = async (req, res) => {
+    try {
+        const data = req.body.data;
+        const teacherData = await prisma.teacher.findUnique({
+            where: {
+                email: data.email
+            }
+        });
+        if(!teacherData){
+            return res.status(401).json({ message: "Teacher not found" })
+        } else {
+            if(teacherData.password === data.password){
+                return res.status(200).json({ teacherData });
+            } else{
+                return res.status(401).json({ message: "Invalid Credentials" })
+            }
+        }
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
 const getAllTeachers = async (req, res) => {
     try {
         const teachers = await prisma.teacher.findMany();
@@ -36,5 +60,6 @@ const getAllTeachers = async (req, res) => {
 
 module.exports = {
     createTeacher,
-    getAllTeachers
+    getAllTeachers,
+    teacherLogin
 }
