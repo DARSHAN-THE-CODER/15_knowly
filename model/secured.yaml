@@ -1,0 +1,7 @@
+db_host: dotslash.csw9dqgbf1vn.us-east-1.rds.amazonaws.com
+db_user: postgres
+db_password: password
+db_name: postgres
+db_port: 5432
+gpt_api_endpoint: "https://api.openai.com/v1/completions"
+gpt_api_key: "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"
