@@ -8,7 +8,8 @@ function Teacher() {
 
   const router = useRouter()
   useEffect(() => {
-    console.log(router.query['id'])
+    console.log(router.query)
+    // localStorage.setItem("knowlyclasscode",)
   }, [])
   
   const cardData = [
