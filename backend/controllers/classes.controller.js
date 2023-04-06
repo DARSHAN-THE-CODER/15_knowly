@@ -103,10 +103,38 @@ const getClassesUsingClassCode = async (req, res) => {
     }
 }
 
+// student joining a class , using class code, studnet id
+const joinClassByStudent = async (req, res) => {
+    try {
+        const { classCode, studentId } = req.params;
+
+        // join class using class code and student id
+        const update = await prisma.class.update({
+            where: {
+                classCode: classCode
+            },
+            data: {
+                students: {
+                    connect: {
+                        id: parseInt(studentId)
+                    }
+                }
+            }
+        });
+
+        res.status(200).json({ update });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
 module.exports = {
     createClass,
     getAllClasses,
     getClassesUsingStudentId,
     getClassesUsingClassCode,
     getClassesUsingTeacherId,
+    joinClassByStudent
 }

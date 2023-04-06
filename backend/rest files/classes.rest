@@ -18,3 +18,6 @@ GET {{baseURL}}
 
 ### Get class made by teacher using id
 GET {{baseURL}}/teacher/1
+
+### Student join class , using class code, student id
+POST {{baseURL}}/studentjoin/ABCD123/1
