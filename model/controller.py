@@ -12,12 +12,6 @@ request_header = {
     "Authorization": "Bearer "+api_key
 }
 
-#response = requests.post(api_endpoint, headers=request_header,json=request_body)
-# print(response)
-
-# if(response.status_code == 200):
-#     print(response.json()['choices'][0]['text'])
-
 def get_ai_review(question,testcases,answer):
     testcases_string = ""
     for i in range(len(testcases)):
@@ -39,10 +33,10 @@ def get_ai_review(question,testcases,answer):
     template += "The code which I wrote is: "
     template += answer
     template += ". On a scale of 1 to 10 how much do you grade my code. "
-    template += "Answer the question in less than 250 words. Point out mistakes if any and give the correct output"
+    template += "Point out mistakes if any and give the correct code. Also wrap the code in <code>"
 
-    # MIND THIS !!!!!!!
-    template = "For the question: Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order. Which have the following testcases: TestCase1: Input: nums = [2,7,11,15], target = 9, Output: [0,1],TestCase2: Input: nums = [3,2,4], target = 6, Output: [1,2],TestCase3: Input: nums = [3,3], target = 6, Output: [0,1], The code which I wrote is: class Solution { public: vector<int> twoSum(vector<int>& nums, int target) {map<int,int> m; for(int i=0;i<nums.size();i--){ if(m.find(nums[i]) == m.end()){ m[target - nums[i]] = i;}else{return {m[nums[i]],i};}}return {-1,-1}; }};. On a scale of 1 to 10 how much do you grade my code. Answer the question in less than 250 words. Point out mistakes if any and give the correct output"
+    # MIND THIS !!!!!!! --Remove after testing--
+    template = "For the question: Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order. Which have the following testcases: TestCase1: Input: nums = [2,7,11,15], target = 9, Output: [0,1],TestCase2: Input: nums = [3,2,4], target = 6, Output: [1,2],TestCase3: Input: nums = [3,3], target = 6, Output: [0,1], The code which I wrote is: class Solution { public: vector<int> twoSum(vector<int>& nums, int target) {map<int,int> m; for(int i=0;i<nums.size();i--){ if(m.find(nums[i]) == m.end()){ m[target - nums[i]] = i;}else{return {m[nums[i]],i};}}return {-1,-1}; }};. On a scale of 1 to 10 how much do you grade my code. Point out mistakes if any and give the correct code. Wrape the code in <code>"
 
     print("The request template: ",template)
 
@@ -56,9 +50,14 @@ def get_ai_review(question,testcases,answer):
     response = requests.post(api_endpoint, headers=request_header,json=request_body)
     print(response)
 
+    ans = ""
     if(response.status_code == 200):
         ans = response.json()['choices'][0]['text']
         print(ans)
+
+    ans = ans.split('\n\n', 1)[1]
+
+    ans = ans.replace(' ', '&nbsp;').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
 
     return ans
 

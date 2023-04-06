@@ -10,20 +10,20 @@ with open('secured.yaml', 'r') as file:
 app = Flask(__name__)
 api  = Api(app)
 
-conn = psycopg2.connect(
-    host=secured_data['db_host'],
-    port=secured_data['db_port'],
-    dbname=secured_data['db_name'],
-    user=secured_data['db_user'],
-    password=secured_data['db_password'] 
-)
+# conn = psycopg2.connect(
+#     host=secured_data['db_host'],
+#     port=secured_data['db_port'],
+#     dbname=secured_data['db_name'],
+#     user=secured_data['db_user'],
+#     password=secured_data['db_password'] 
+# )
 
-if conn.status == psycopg2.extensions.STATUS_READY:
-    print("Connection is ready.")
-else:
-    print("Connection is not ready.")
+# if conn.status == psycopg2.extensions.STATUS_READY:
+#     print("Connection is ready.")
+# else:
+#     print("Connection is not ready.")
 
-conn.close()
+# conn.close()
 
 class TestGetData(Resource): 
     def get(self):
@@ -40,8 +40,9 @@ class TestPostData(Resource):
 class GetAIReview(Resource):
     def post(self):
         posted_data = json.loads(request.data)
-        return get_ai_review(posted_data['question'],posted_data['testCases'],posted_data['studentAnswer'])
-        return("Success!!")
+        ans = get_ai_review(posted_data['question'],posted_data['testCases'],posted_data['studentAnswer'])
+        ret_obj = {"review":ans}
+        return ret_obj
 
 
 api.add_resource(TestGetData,"/api/model/testgetdata") # Testing the get route
