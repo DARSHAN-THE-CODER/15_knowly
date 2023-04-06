@@ -28,7 +28,7 @@ def get_ai_review(question,testcases,answer):
 
     template = "For the question: "
     template += question
-    template += "Which have the following testcases: "
+    template += "Which has the following testcases: "
     template += testcases_string
     template += "The code which I wrote is: "
     template += answer
@@ -57,8 +57,32 @@ def get_ai_review(question,testcases,answer):
 
     ans = ans.split('\n\n', 1)[1]
 
-    ans = ans.replace(' ', '&nbsp;').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+    #ans = ans.replace(' ', '&nbsp;').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
 
     return ans
 
 
+def get_story(key_word):
+    print("Control Reached")
+    template = "write a short really interesting story covering all the real world applications of "+key_word
+
+    request_body = {
+    "model": "text-davinci-003",
+    "prompt": template,
+    "max_tokens": 2000,
+    "temperature": 1, 
+    }
+
+    response = requests.post(api_endpoint, headers=request_header,json=request_body)
+    print(response)
+
+    ans = ""
+    if(response.status_code == 200):
+        ans = response.json()['choices'][0]['text']
+        print(ans)
+
+    #ans = ans.split('\n\n', 1)[1]
+
+    #ans = ans.replace(' ', '&nbsp;').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+
+    return ans

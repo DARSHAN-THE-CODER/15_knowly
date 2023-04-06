@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, json, session, redirect
 from flask_restful import Api, Resource
-from controller import get_ai_review
+from controller import get_ai_review, get_story
 import psycopg2
 import yaml
 
@@ -42,12 +42,20 @@ class GetAIReview(Resource):
         posted_data = json.loads(request.data)
         ans = get_ai_review(posted_data['question'],posted_data['testCases'],posted_data['studentAnswer'])
         ret_obj = {"review":ans}
-        return ret_obj
+        return jsonify(ret_obj)
+
+class GetStory(Resource):
+    def post(self):
+        posted_data = json.loads(request.data)
+        ans = get_story(posted_data['keyWord'])
+        ret_obj = {"key_story":ans}
+        return jsonify(ret_obj)
 
 
 api.add_resource(TestGetData,"/api/model/testgetdata") # Testing the get route
 api.add_resource(TestPostData,"/api/model/testpostdata") # Testing the post route
-api.add_resource(GetAIReview,"/api/model/getaireview") # Posing the question json, this will give AI review 
+api.add_resource(GetAIReview,"/api/model/getaireview") # Posting the question json, this will give AI review
+api.add_resource(GetStory,"/api/model/getstory") # Posting a particular key word and get use case story
 
 if __name__ == "__main__":
     app.run(debug=True)
