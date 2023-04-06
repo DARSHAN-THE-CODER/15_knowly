@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  password String
+  classes  Class[] // An array of classes that the user is a part of
+}
+
+model Teacher {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  password String
+  classes  Class[] // An array of classes that the teacher has created
+}
+
+model Class {
+  id        Int      @id @default(autoincrement())
+  classCode String   @unique
+  name      String
+  students  User[] // A class can have many students
+  teacher   Teacher? @relation(fields: [teacherId], references: [id]) // A class can have one teacher
+  teacherId Int?
+}
