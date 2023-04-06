@@ -1,6 +1,8 @@
 import React from 'react'
 
-function Card({title, img, btnContent}) {
+import Link from 'next/link'
+
+function Card({title, img, btnContent, path}) {
     return (
         <div class="card bg-gray-100 p-4 rounded-3xl cursor-pointer">
             <div class="header">
@@ -18,9 +20,9 @@ function Card({title, img, btnContent}) {
             </p>
 
             <div class="actions">
-                <a class="read" href="">
+                <Link class="read" href={path || "/"}>
                 {btnContent}
-                </a>
+                </Link>
 
                 {/* <a class="mark-as-read" href="">
                     Mark as Read

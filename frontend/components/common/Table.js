@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
+import { useRouter } from 'next/router';
+
 const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30] }) => {
+
+    const router = useRouter();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
@@ -35,6 +39,7 @@ const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30] }) => {
 
     const handleRowClick = (rowData) => {
         console.log(rowData);
+        router.push(`/dashboard/teacher/assignment/${rowData.classCode}`)
     };
 
 

@@ -69,10 +69,10 @@ const getClassesUsingTeacherId = async (req, res) => {
     try {
         const { teacherId } = req.params;
 
-        const classes = await prisma.classes.findMany({
+        const classes = await prisma.class.findMany({
             where: {
                 teacher: {
-                    id: teacherId
+                    id: parseInt(teacherId)
                 }
             }
         });

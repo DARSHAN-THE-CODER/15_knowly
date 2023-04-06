@@ -27,7 +27,8 @@ function Teacher() {
     {
       title: "Create Assignment",
       img: "",
-      button: "Proceed"
+      button: "Proceed",
+      path: "/dashboard/teacher/assignment"
     },
     {
       title: "Upload notes",
@@ -59,7 +60,7 @@ function Teacher() {
         {
           cardData.map((card, index) => (
             <div className='w-[300px] m-auto'>
-              <Card title={card.title} btnContent={card.button} img={card.img} />
+              <Card title={card.title} btnContent={card.button} img={card.img} path={card?.path} />
             </div>
           ))
         }

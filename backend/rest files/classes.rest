@@ -13,5 +13,8 @@ Content-Type: application/json
     }
 }
 
-### Get Classes
+### Get classes
 GET {{baseURL}}
+
+### Get class made by teacher using id
+GET {{baseURL}}/teacher/1
