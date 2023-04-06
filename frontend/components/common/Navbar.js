@@ -17,7 +17,7 @@ const Navbar = ({loggedIn , setIsloggedIn, routes, setRoutes}) => {
   }
 
   return (
-    <nav className="flex items-center justify-between top-0 flex-wrap bg-blue-500 p-6 sticky">
+    <nav className="flex items-center justify-between top-0 flex-wrap bg-blue-500 p-6 sticky z-10">
       <div className="flex items-center flex-shrink-0 text-white mr-6">
         <Link href="/"><span className="font-semibold text-xl tracking-tight">Knowly</span></Link>
       </div>

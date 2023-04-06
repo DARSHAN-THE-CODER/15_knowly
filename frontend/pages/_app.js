@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }) {
   <>
     <ToastContainer autoClose={2000} />
     <Layout routes={routes} setRoutes={setRoutes} loggedIn={loggedIn} setIsloggedIn={setIsloggedIn}>
-      <Component {...pageProps} />
+      <Component {...pageProps} loggedIn = {loggedIn} setIsloggedIn={setIsloggedIn} routes={routes} setRoutes= {setRoutes} {...pageProps}  />
     </Layout>
   </>)
 }

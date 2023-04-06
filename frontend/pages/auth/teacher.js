@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 
 import { useRouter } from 'next/router'
 
-function Teacher() {
+function Teacher({loggedIn, setIsloggedIn}) {
   const router = useRouter()
   const [user, setUser] = useState({
     email: '',
@@ -24,20 +24,21 @@ function Teacher() {
   function handleSubmit(e) {
     e.preventDefault()
     console.log(user)
-    // axios.post(`${APIURL}/user/login`, user)
-    //   .then((res) => {
-    //     console.log(res.data)
-    //     toast.success('Login Successful')
-    //     localStorage.setItem('lmsuser', 'student')
-    //     localStorage.setItem('lmsuserid', res.data.id)
-    //     router.push(`/dashboard/student/${res.data.id}`)
-    //   }
-    //   )
-    //   .catch((err) => {
-    //     console.log(err)
-    //     toast.error('Login Failed')
-    //   }
-    //   )
+    axios.post(`${APIURL}/teacher/login`, {data:user})
+      .then((res) => {
+        console.log(res.data)
+        toast.success('Login Successful')
+        localStorage.setItem('knowlyuser', 'teacher')
+        localStorage.setItem('knowlyuserid', res.data.teacherData.id)
+        setIsloggedIn(true)
+        router.push(`/dashboard/teacher/${res.data.teacherData.id}`)
+      }
+      )
+      .catch((err) => {
+        console.log(err)
+        toast.error('Login Failed')
+      }
+      )
 }
 
 
