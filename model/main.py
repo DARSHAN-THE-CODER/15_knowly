@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, json, session, redirect
 from flask_restful import Api, Resource
+from controller import get_ai_review
 import psycopg2
 import yaml
 
@@ -14,7 +15,7 @@ conn = psycopg2.connect(
     port=secured_data['db_port'],
     dbname=secured_data['db_name'],
     user=secured_data['db_user'],
-    password=secured_data['db_password']
+    password=secured_data['db_password'] 
 )
 
 if conn.status == psycopg2.extensions.STATUS_READY:
@@ -36,9 +37,16 @@ class TestPostData(Resource):
         send_data = {"my_data":"TestPostData Working!"}
         return jsonify(send_data)
 
+class GetAIReview(Resource):
+    def post(self):
+        posted_data = json.loads(request.data)
+        return get_ai_review(posted_data['question'],posted_data['testCases'],posted_data['studentAnswer'])
+        return("Success!!")
 
-api.add_resource(TestGetData,"/testgetdata")
-api.add_resource(TestPostData,"/testpostdata")
+
+api.add_resource(TestGetData,"/api/model/testgetdata") # Testing the get route
+api.add_resource(TestPostData,"/api/model/testpostdata") # Testing the post route
+api.add_resource(GetAIReview,"/api/model/getaireview") # Posing the question json, this will give AI review 
 
 if __name__ == "__main__":
     app.run(debug=True)
