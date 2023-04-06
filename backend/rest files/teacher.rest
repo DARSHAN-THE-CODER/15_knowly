@@ -1,0 +1,17 @@
+@baseURL=http://localhost:8001/api/v1/teacher
+# @baseURL = https://portfolio.darshanv.website/api/v1/user
+
+### Create Teacher
+POST {{baseURL}}
+Content-Type: application/json
+
+{
+    "data": {
+        "name": "Darshan",
+        "email": "teacher@gmail.com",
+        "password": "1234"
+    }
+}
+
+### Get Teacher
+GET {{baseURL}}

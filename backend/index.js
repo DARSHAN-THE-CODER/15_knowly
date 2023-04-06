@@ -19,13 +19,13 @@ app.use(
 // CORS
 app.use(cors());
 
-// const defaultRouter = require('./routes/index')
+const defaultRouter = require('./routes/index.js')
 
 app.get("/", (req, res) => {
     res.json({ message: "Server running" });
 });
 
-// app.use('/api/v1',defaultRouter)
+app.use('/api/v1',defaultRouter)
 
 app.listen(PORT, () => {
     console.log(`Server listening at http://localhost:${PORT}`);
