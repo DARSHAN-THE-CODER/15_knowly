@@ -69,3 +69,7 @@
   .mark-as-read:hover {
     background-color: rgb(230, 231, 233);
   }
+
+  code {
+    font-size: 300px;
+  }

@@ -1,15 +1,15 @@
 import React from 'react'
 
-function Card() {
+function Card({title, img, btnContent}) {
     return (
-        <div class="card">
+        <div class="card bg-gray-100 p-4 rounded-3xl cursor-pointer">
             <div class="header">
                 <span class="icon">
                     <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path clip-rule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" fill-rule="evenodd"></path>
                     </svg>
                 </span>
-                <p class="alert">New message!</p>
+                <p class="alert">{title}</p>
             </div>
 
             <p class="message">
@@ -19,12 +19,12 @@ function Card() {
 
             <div class="actions">
                 <a class="read" href="">
-                    Take a Look
+                {btnContent}
                 </a>
 
-                <a class="mark-as-read" href="">
+                {/* <a class="mark-as-read" href="">
                     Mark as Read
-                </a>
+                </a> */}
             </div>
         </div>
 
