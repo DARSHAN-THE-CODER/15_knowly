@@ -99,8 +99,28 @@ const getAllQuestions = async (req, res) => {
     }
 }
 
+const getQuestionsUsingClassId = async (req, res) => {
+    try {
+        const { classId } = req.params;
+
+        const questions = await prisma.codeQuestions.findMany({
+            where: {
+                classId: parseInt(classId)
+            },
+            include: {
+                testCases: true
+            }
+        });
+        res.status(200).json({ questions });
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ error: "Internal Server Error" })
+    }
+}
+
 module.exports = {
     createCodeQuestion,
     getCodeQuestions,
-    getAllQuestions
+    getAllQuestions,
+    getQuestionsUsingClassId
 }

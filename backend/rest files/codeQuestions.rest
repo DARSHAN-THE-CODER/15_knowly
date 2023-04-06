@@ -30,3 +30,6 @@ Content-Type: application/json
 
 ### Get All questions
 GET {{baseURL}}
+
+### get using classId
+GET {{baseURL}}/class/1

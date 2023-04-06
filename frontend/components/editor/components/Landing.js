@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CodeEditorWindow from "./CodeEditorWindow";
 import axios from "axios";
 import { classnames } from "../utils/general";
@@ -19,16 +19,16 @@ import Question from "./Question";
 
 
 
-const Landing = ({code, setCode, show=false}) => {
+const Landing = ({ code, setCode, show = false, question, title }) => {
   // const [code, setCode] = useState(javascriptDefault);
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("cobalt");
   const [language, setLanguage] = useState(languageOptions[0]);
-  const [selected,setSelected] = useState({
-    id:"0",
-    status:false
+  const [selected, setSelected] = useState({
+    id: "0",
+    status: false
   })
 
   const enterPress = useKeyPress("Enter");
@@ -180,62 +180,61 @@ const Landing = ({code, setCode, show=false}) => {
 
   return (
     <>
-      
+
 
       <div className="flex flex-col">
-      <div className="flex flex-row justify-end">
-        <div className="px-4 py-2">
-          <LanguagesDropdown onSelectChange={onSelectChange} />
+        <div className="flex flex-row justify-end">
+          <div className="px-4 py-2">
+            <LanguagesDropdown onSelectChange={onSelectChange} />
+          </div>
+          <div className="px-4 py-2">
+            <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
+          </div>
         </div>
-        <div className="px-4 py-2">
-          <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
-        </div>
-      </div>
-      <div className="flex flex-row space-x-4 items-start px-4 py-4 ">
-        
+        <div className="flex flex-row space-x-4 items-start px-4 py-4 ">
 
-        {
-          show?(""):
-          (
-            <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
+
+          <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
 
             <div>
-              <Question />
+              <Question question={question} title={title} />
             </div>
-  
-            <OutputWindow outputDetails={outputDetails} />
-            <div className="flex flex-col items-end">
-              <CustomInput
-                customInput={customInput}
-                setCustomInput={setCustomInput}
-              />
-              <button
-                onClick={handleCompile}
-                disabled={!code}
-                className={classnames(
-                  "mt-4 border-2 border-black z-10 rounded-md  px-4 py-2 hover:shadow transition duration-200 bg-white flex-shrink-0",
-                  !code ? "opacity-50" : ""
-                )}
-              >
-                {processing ? "Processing..." : "Compile and Execute"}
-              </button>
-            </div>
-            {outputDetails && <OutputDetails outputDetails={outputDetails} />}
+
+            {show && (<><OutputWindow outputDetails={outputDetails} />
+              <div className="flex flex-col items-end">
+                <CustomInput
+                  customInput={customInput}
+                  setCustomInput={setCustomInput}
+                />
+                <button
+                  onClick={handleCompile}
+                  disabled={!code}
+                  className={classnames(
+                    "mt-4 border-2 border-black z-10 rounded-md  px-4 py-2 hover:shadow transition duration-200 bg-white flex-shrink-0",
+                    !code ? "opacity-50" : ""
+                  )}
+                >
+                  {processing ? "Processing..." : "Compile and Execute"}
+                </button>
+              </div>
+            </>
+            )}
+            {show && (outputDetails && <OutputDetails outputDetails={outputDetails} />)}
+
           </div>
-          )
-        }
 
-        
-        <div className="flex flex-col w-full h-full justify-start items-end">
-          <CodeEditorWindow
-            code={code}
-            onChange={onChange}
-            language={language?.value}
-            theme={theme.value}
-          />
+
+
+          <div className="flex flex-col w-full h-full justify-start items-end">
+            <CodeEditorWindow
+              code={code}
+              onChange={onChange}
+              language={language?.value}
+              theme={theme.value}
+            />
+          </div>
+
         </div>
-
-      </div>
       </div>
       {/* <Footer /> */}
     </>

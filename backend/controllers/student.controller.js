@@ -44,8 +44,7 @@ const studentLogin = async (req, res) => {
 
         const studentdata = await prisma.user.findUnique({
             where: {
-                email: data.email,
-                password: data.password
+                email: data.email
             }
         });
 

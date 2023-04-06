@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { quest } from '../constants/quest';
 
-const Question = () => {
+const Question = ({question, title}) => {
 
     const [data,setData] = useState();
     // setData(quest[0]);
@@ -22,10 +22,10 @@ const Question = () => {
       <div className="w-full p-4 shadow-md lg:max-w-lg">
             <div className="space-y-2">
                 <h3 className="text-2xl font-semibold">
-                    Question
+                    {title}
                 </h3>
                 <p className="text-gray-600">
-                    question.....
+                    {question}
                 </p>
             </div>
       </div>

@@ -32,9 +32,9 @@ function student() {
       .then((res) => {
         console.log(res.data)
         toast.success('Login Successful')
-        localStorage.setItem('lmsuser', 'student')
-        localStorage.setItem('lmsuserid', res.data.id)
-        router.push(`/dashboard/student/${res.data.id}`)
+        localStorage.setItem('knowlyuser', 'student')
+        localStorage.setItem('knowlyuserid', res.data.studentdata.id)
+        router.push(`/dashboard/student/${res.data.studentdata.id}`)
       }
       )
       .catch((err) => {
@@ -47,7 +47,7 @@ function student() {
 
   return (
     <div className=''>
-      <Modal open={open} setOpen={setOpen} >
+      {/* <Modal open={open} setOpen={setOpen} > */}
         <LoginPage
             handleReset={handleReset}
             user={user}
@@ -55,7 +55,7 @@ function student() {
             content='Student Login'
             handleSubmit={handleSubmit}
         />
-        </Modal>
+        {/* </Modal> */}
     </div>
   )
 }

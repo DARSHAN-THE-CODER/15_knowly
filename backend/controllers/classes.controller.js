@@ -47,11 +47,11 @@ const getClassesUsingStudentId = async (req, res) => {
     try {
         const { studentId } = req.params;
 
-        const classes = await prisma.classes.findMany({
+        const classes = await prisma.class.findMany({
             where: {
                 students: {
                     some: {
-                        id: studentId
+                        id: parseInt(studentId)
                     }
                 }
             }

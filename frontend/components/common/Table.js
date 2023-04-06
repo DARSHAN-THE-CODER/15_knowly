@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useRouter } from 'next/router';
 
-const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30], viewBtn, routePath }) => {
+const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30], viewBtn, routePath, user="teacher", disabled=false, handleSpecialCase }) => {
 
     const router = useRouter();
 
@@ -41,7 +41,7 @@ const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30], viewBtn, rout
         console.log(rowData);
         localStorage.setItem('classCode', rowData.classCode)
         localStorage.setItem('classId', rowData.id)
-        router.push(`/dashboard/teacher/${routePath}/${rowData.classCode}`)
+        router.push(`/dashboard/${user}/${routePath}/${rowData.classCode}`)
     };
 
 
@@ -98,8 +98,9 @@ const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30], viewBtn, rout
                             <td className="px-6 py-4 whitespace-nowrap flex gap-3">
                                 {/* Render action button */}
                                 <button
+                                    // disabled={disabled}
                                     className="px-3 py-1 text-white bg-blue-500 rounded"
-                                    onClick={() => handleRowClick(row)}
+                                    onClick={() => { handleSpecialCase ? handleSpecialCase(row) :  handleRowClick(row)}}
                                 >
                                     {viewBtn} 
                                 </button>
