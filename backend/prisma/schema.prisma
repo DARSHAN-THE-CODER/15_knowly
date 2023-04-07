@@ -32,6 +32,8 @@ model Class {
     teacherId     Int?
     codeQuestions CodeQuestions[]
     content       String?
+    story         String?
+    random        String?
 }
 
 model CodeQuestions {
@@ -55,4 +57,10 @@ model TestCases {
 
     CodeQuestions   CodeQuestions? @relation(fields: [codeQuestionsId], references: [id])
     codeQuestionsId Int?
+}
+
+model CronJob {
+  id      Int     @id @default(autoincrement())
+  name    String
+  lastRun DateTime?
 }

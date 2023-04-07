@@ -3,12 +3,16 @@ from flask_restful import Api, Resource
 from controller import get_ai_review, get_story
 import psycopg2
 import yaml
+from flask_cors import CORS
+
 
 with open('secured.yaml', 'r') as file:
     secured_data = yaml.load(file, Loader=yaml.FullLoader)
 
 app = Flask(__name__)
+cors = CORS(app)
 api  = Api(app)
+
 
 # conn = psycopg2.connect(
 #     host=secured_data['db_host'],
@@ -25,11 +29,13 @@ api  = Api(app)
 
 # conn.close()
 
+# @cross_origin(origin='*')
 class TestGetData(Resource): 
     def get(self):
         send_data = {"my_data":"TestGetData Working!"}
         return jsonify(send_data)
 
+# @cross_origin(origin='*')
 class TestPostData(Resource):
     def post(self):
         posted_data = json.loads(request.data)
@@ -37,13 +43,17 @@ class TestPostData(Resource):
         send_data = {"my_data":"TestPostData Working!"}
         return jsonify(send_data)
 
+# @cross_origin(origin='*')
 class GetAIReview(Resource):
     def post(self):
+        # print(request.data)
         posted_data = json.loads(request.data)
-        ans = get_ai_review(posted_data['question'],posted_data['testCases'],posted_data['studentAnswer'])
+        # print(posted_data['data'][])
+        ans = get_ai_review(posted_data['question'],posted_data['testCases'],posted_data['code'])
         ret_obj = {"review":ans}
         return jsonify(ret_obj)
 
+# @cross_origin(origin='*')
 class GetStory(Resource):
     def post(self):
         posted_data = json.loads(request.data)

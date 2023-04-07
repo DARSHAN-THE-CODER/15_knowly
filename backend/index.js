@@ -4,6 +4,8 @@ const path = require("path");
 const cors = require("cors");
 const dotenv = require("dotenv");
 
+require('./cron.js')
+
 dotenv.config();
 
 const app = express();

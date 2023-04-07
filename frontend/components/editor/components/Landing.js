@@ -19,7 +19,7 @@ import Question from "./Question";
 
 
 
-const Landing = ({ code, setCode, show = false, question, title }) => {
+const Landing = ({ code, setCode, show = false, question, title, handleSubmit, handleTeacherAnswerShow }) => {
   // const [code, setCode] = useState(javascriptDefault);
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
@@ -179,9 +179,7 @@ const Landing = ({ code, setCode, show = false, question, title }) => {
   };
 
   return (
-    <>
-
-
+    <div className="">
       <div className="flex flex-col">
         <div className="flex flex-row justify-end">
           <div className="px-4 py-2">
@@ -196,8 +194,31 @@ const Landing = ({ code, setCode, show = false, question, title }) => {
 
           <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
 
-            <div>
+            <div className="flex flex-col">
               <Question question={question} title={title} />
+              <div className="flex justify-evenly">
+
+              <button
+                onClick={handleTeacherAnswerShow}
+                // disabled={!code}
+                className={classnames(
+                  "mt-4 border-2 border-black z-10 rounded-md  px-4 py-2 hover:shadow transition duration-200 bg-white flex-shrink-0",
+                  !code ? "opacity-50" : ""
+                )}
+              >
+                Submit
+              </button>
+              <button
+                onClick={handleSubmit}
+                // disabled={!code}
+                className={classnames(
+                  "mt-4 border-2 border-black z-10 rounded-md  px-4 py-2 hover:shadow transition duration-200 bg-white flex-shrink-0",
+                  !code ? "opacity-50" : ""
+                )}
+              >
+                Knowly Review
+              </button>
+              </div>
             </div>
 
             {show && (<><OutputWindow outputDetails={outputDetails} />
@@ -225,19 +246,27 @@ const Landing = ({ code, setCode, show = false, question, title }) => {
 
 
 
-          <div className="flex flex-col w-full h-full justify-start items-end">
+          <div className="flex flex-col w-full h-[40vh] justify-start items-end">
             <CodeEditorWindow
               code={code}
               onChange={onChange}
               language={language?.value}
               theme={theme.value}
             />
+            {/* {
+              review && (
+                <div className='flex flex-col border-black rounded-xl p-4 w-full shadow-lg border-2'>
+                    <h2 className='text-center text-3xl font-bold'>Knowly Review</h2>
+                    <div id="knowlyreview" className='text-xl'></div>
+                </div>
+            )
+            } */}
           </div>
 
         </div>
       </div>
       {/* <Footer /> */}
-    </>
+    </div>
   );
 };
 export default Landing;

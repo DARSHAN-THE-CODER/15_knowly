@@ -89,7 +89,7 @@ const getClassesUsingClassCode = async (req, res) => {
     try {
         const { classCode } = req.params;
 
-        const classes = await prisma.classes.findMany({
+        const classes = await prisma.class.findUnique({
             where: {
                 classCode: classCode
             }
