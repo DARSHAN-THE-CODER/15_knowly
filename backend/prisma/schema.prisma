@@ -1,66 +1,103 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-    id       Int     @id @default(autoincrement())
-    name     String
-    email    String  @unique
-    password String
-    classes  Class[] // An array of classes that the user is a part of
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  password String
+  classes  Class[] // An array of classes that the user is a part of
 }
 
 model Teacher {
-    id       Int     @id @default(autoincrement())
-    name     String
-    email    String  @unique
-    password String
-    classes  Class[] // An array of classes that the teacher has created
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  password String
+  classes  Class[] // An array of classes that the teacher has created
 }
 
 model Class {
-    id            Int             @id @default(autoincrement())
-    classCode     String          @unique
-    name          String
-    students      User[] // A class can have many students
-    teacher       Teacher?        @relation(fields: [teacherId], references: [id]) // A class can have one teacher
-    teacherId     Int?
-    codeQuestions CodeQuestions[]
-    content       String?
-    story         String?
-    random        String?
+  id            Int             @id @default(autoincrement())
+  classCode     String          @unique
+  name          String
+  students      User[] // A class can have many students
+  teacher       Teacher?        @relation(fields: [teacherId], references: [id]) // A class can have one teacher
+  teacherId     Int?
+  codeQuestions CodeQuestions[]
+  content       String?
+  story         String?
+  random        String?
+  Quiz          Quiz[]
 }
 
 model CodeQuestions {
-    id       Int     @id @default(autoincrement())
-    title    String
-    question String
-    answer   String
-    isCode   Boolean @default(true)
+  id       Int     @id @default(autoincrement())
+  title    String
+  question String
+  answer   String
+  isCode   Boolean @default(true)
 
-    testCases TestCases[]
+  testCases TestCases[]
 
-    Class   Class? @relation(fields: [classId], references: [id])
-    classId Int?
+  Class   Class? @relation(fields: [classId], references: [id])
+  classId Int?
 }
 
 model TestCases {
-    id    Int    @id @default(autoincrement())
-    input String
+  id    Int    @id @default(autoincrement())
+  input String
 
-    output String
+  output String
 
-    CodeQuestions   CodeQuestions? @relation(fields: [codeQuestionsId], references: [id])
-    codeQuestionsId Int?
+  CodeQuestions   CodeQuestions? @relation(fields: [codeQuestionsId], references: [id])
+  codeQuestionsId Int?
 }
 
 model CronJob {
-  id      Int     @id @default(autoincrement())
+  id      Int       @id @default(autoincrement())
   name    String
   lastRun DateTime?
+}
+
+// quiz model
+
+model Quiz {
+  id      Int    @id @default(autoincrement())
+  title   String
+  class   Class  @relation(fields: [classCode], references: [classCode])
+  classCode String
+
+  questions Question[]
+  Responses  Response[]
+}
+
+model Question {
+  id      Int      @id @default(autoincrement())
+  question    String
+  options Option[]
+  answer  String
+  quiz    Quiz     @relation(fields: [quizId], references: [id])
+  quizId  Int
+}
+
+model Option {
+  id         Int      @id @default(autoincrement())
+  text       String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId Int
+}
+
+model Response {
+  id          Int    @id @default(autoincrement())
+  studentName String
+  score       Float
+  quiz        Quiz   @relation(fields: [quizId], references: [id])
+  quizId      Int
 }

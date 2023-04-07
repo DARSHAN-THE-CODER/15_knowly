@@ -29,6 +29,22 @@ app.get("/", (req, res) => {
 
 app.use('/api/v1',defaultRouter)
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server listening at http://localhost:${PORT}`);
 });
+
+var io = require('socket.io')(server, {
+    pingTimeout: 60000,
+    cors: {
+      origin: "*"
+    }
+});
+
+io.on('connection',(socket) => {
+    console.log('New user connected')
+    
+    socket.on('disconnect', () => {
+        console.log('User disconnected')
+    })
+})
+  
