@@ -25,3 +25,12 @@ Content-Type: application/json
             
     }
 }
+
+### Get Quiz
+GET {{baseURL}}/ABCD123
+
+### Get Quiz LEADERBOARD
+GET {{baseURL}}/leaderboard/ABCD123
+
+### Delete leaderboard
+DELETE {{baseURL}}/leaderboard/ABCD123

@@ -21,15 +21,24 @@ const Navbar = ({loggedIn , setIsloggedIn, routes, setRoutes}) => {
       <div className="flex items-center flex-shrink-0 text-white mr-6">
         <Link href="/"><span className="font-semibold text-xl tracking-tight">Knowly</span></Link>
       </div>
+      <div className='flex'>
+      
+      </div>
       { !loggedIn ? (<div className="flex">
+      <Link href="/quiz">
+          <p className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-2">Quiz</p>
+        </Link>
         <Link href="/auth/student">
-          <p className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-2">Student Login</p>
+          <p className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-2">Student</p>
         </Link>
         <Link href="/auth/teacher">
-          <p className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Teacher Login</p>
+          <p className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Teacher</p>
         </Link>
       </div>) : (
         <div className="flex flex-wrap">
+          <Link href="/quiz">
+          <p className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-2">Quiz</p>
+        </Link>
           {
             routes.map((route, index) => (
               <Link href={route.path} key={index}>

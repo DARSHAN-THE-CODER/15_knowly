@@ -35,6 +35,7 @@ model Class {
   story         String?
   random        String?
   Quiz          Quiz[]
+  Response      Response[]
 }
 
 model CodeQuestions {
@@ -69,22 +70,22 @@ model CronJob {
 // quiz model
 
 model Quiz {
-  id      Int    @id @default(autoincrement())
-  title   String
-  class   Class  @relation(fields: [classCode], references: [classCode])
+  id        Int    @id @default(autoincrement())
+  title     String
+  class     Class  @relation(fields: [classCode], references: [classCode])
   classCode String
 
   questions Question[]
-  Responses  Response[]
+  //   Responses  Response[]
 }
 
 model Question {
-  id      Int      @id @default(autoincrement())
-  question    String
-  options Option[]
-  answer  String
-  quiz    Quiz     @relation(fields: [quizId], references: [id])
-  quizId  Int
+  id       Int      @id @default(autoincrement())
+  question String
+  options  Option[]
+  answer   String
+  quiz     Quiz     @relation(fields: [quizId], references: [id])
+  quizId   Int
 }
 
 model Option {
@@ -97,7 +98,9 @@ model Option {
 model Response {
   id          Int    @id @default(autoincrement())
   studentName String
-  score       Float
-  quiz        Quiz   @relation(fields: [quizId], references: [id])
-  quizId      Int
+  score       Float?
+  correct     Int?
+  class       Class  @relation(fields: [classCode], references: [classCode])
+  classCode   String
+  @@unique([id, studentName])
 }

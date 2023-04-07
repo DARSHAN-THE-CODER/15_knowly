@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 
 import Modal from '@/components/common/Modal'
 
-function student() {
+function student({setIsloggedIn}) {
   const router = useRouter()
   const [user, setUser] = useState({
     email: '',
@@ -34,6 +34,7 @@ function student() {
         toast.success('Login Successful')
         localStorage.setItem('knowlyuser', 'student')
         localStorage.setItem('knowlyuserid', res.data.studentdata.id)
+        setIsloggedIn(true)
         router.push(`/dashboard/student/${res.data.studentdata.id}`)
       }
       )

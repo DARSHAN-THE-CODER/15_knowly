@@ -58,6 +58,80 @@ const createQuiz = async (req, res) => {
     }
 }
 
+const getQuizDetails = async (req, res) => {
+    try {
+        const  {classCode} = req.params;
+        console.log(classCode)
+        const quiz = await prisma.quiz.findMany({
+            where: {
+                class: {
+                    classCode: classCode
+                }
+            },
+            include: {
+                questions: {
+                    include: {
+                        options: true
+                    }
+                }
+            }
+        })
+
+        res.status(200).json({ quiz })
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}  
+
+const getLeaderBoard = async (req, res) => {
+    try {
+        const { classCode } = req.params;
+
+        const leaderboard = await prisma.class.findUnique({
+            where: {
+                classCode : classCode
+            },
+            include: {
+                Response: true
+            }
+        })
+
+        res.status(200).json({ "leaderboard": leaderboard })
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
+const deleteLeaderBoardResponses = async (req, res) => {
+    try {
+        const { classCode } = req.params;
+
+        // delete response array completely
+
+        const leaderboard = await prisma.response.deleteMany({
+            where: {
+                classCode : classCode
+            }
+        })
+
+        res.status(200).json({ "leaderboard": leaderboard })
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
+
+
+
 module.exports = {
-    createQuiz
+    createQuiz,
+    getQuizDetails,
+    getLeaderBoard,
+    deleteLeaderBoardResponses
 }
