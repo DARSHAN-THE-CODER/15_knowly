@@ -57,8 +57,6 @@ def get_ai_review(question,testcases,answer):
 
     ans = ans.split('\n\n', 1)[1]
 
-    #ans = ans.replace(' ', '&nbsp;').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
-
     return ans
 
 
@@ -81,8 +79,38 @@ def get_story(key_word):
         ans = response.json()['choices'][0]['text']
         print(ans)
 
-    #ans = ans.split('\n\n', 1)[1]
+    return ans
 
-    #ans = ans.replace(' ', '&nbsp;').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+def get_quizz(content):
+    template = content
+    # template += """
+    # . Generate 5 very multiple choice questions based on the above text, wrap each mcq in <dict>, and give the output in the following format:
+    # <dict>
+    # "Question": "What industries are taking advantage of cloud computing?",
+    # "Answer": "A",
+    # "A": "Organizations of every type, size, and industry.",
+    # "B": "Small businesses.",
+    # "C": "Large corporations.",
+    # "D": "Government agencies."
+    # </dict>
+    # """
+    #template += ". Generate 5 very important multiple choice question and associated answers based on the above content."
+    template += "Generate 5 mcq questions with answers, based on the above text"
+    request_body = {
+    "model": "text-davinci-003",
+    "prompt": template,
+    "max_tokens": 2000,
+    "temperature": 0, 
+    }
+
+    response = requests.post(api_endpoint, headers=request_header,json=request_body)
+    print(response)
+
+    ans = ""
+    if(response.status_code == 200):
+        ans = response.json()['choices'][0]['text']
+
+    print(ans)
+    # ans = ans.split('\n')
 
     return ans

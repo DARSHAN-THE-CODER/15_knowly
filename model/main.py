@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, json, session, redirect
 from flask_restful import Api, Resource
-from controller import get_ai_review, get_story
+from controller import get_ai_review, get_story, get_quizz
+#from quizz import solve
 import psycopg2
 import yaml
 from flask_cors import CORS
@@ -61,11 +62,20 @@ class GetStory(Resource):
         ret_obj = {"key_story":ans}
         return jsonify(ret_obj)
 
+class GetQuizz(Resource):
+    def post(self):
+        posted_data = json.loads(request.data)
+        ans = get_quizz(posted_data['content'])
+        # ans = solve(posted_data['content'])
+        ret_obj = {"questions":ans}
+        return jsonify(ret_obj)
+
 
 api.add_resource(TestGetData,"/api/model/testgetdata") # Testing the get route
 api.add_resource(TestPostData,"/api/model/testpostdata") # Testing the post route
 api.add_resource(GetAIReview,"/api/model/getaireview") # Posting the question json, this will give AI review
 api.add_resource(GetStory,"/api/model/getstory") # Posting a particular key word and get use case story
+api.add_resource(GetQuizz,"/api/model/getquizz") # Post the content get the quizz questions
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -24,12 +24,10 @@ from transformers import pipeline
 
 # f = open("dontcry.txt","r")
 # full_text = f.read()
-full_text = "The Greek historian knew what he was talking about. The Nile River fed Egyptian civilization for hundreds of years. The Longest River the Nile is 4,160 miles long—the world’s longest river. It begins near the equator in Africa and flows north to the Mediterranean Sea. In the south the Nile churns with cataracts. A cataract is a waterfall. Near the sea the Nile branches into a delta. A delta is an area near a river’s mouth where the water deposits fine soil called silt. In the delta, the Nile divides into many streams. The river is called the upper Nile in the south and the lower Nile in the north. For centuries, heavy rains in Ethiopia caused the Nile to flood every summer. The floods deposited rich soil along the Nile’s shores. This soil was fertile, which means it was good for growing crops. Unlike the Tigris and Euphrates, the Nile River flooded at the same time every year, so farmers could predict when to plant their crops."
-print(len(full_text))
+
 
 # summary = summarizer(full_text, max_length=50, min_length=10, do_sample=False)[0]['summary_text']
 
-print(full_text)
 # print(summary)
 
 import nltk
@@ -43,6 +41,73 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
+# full_text = "The Greek historian knew what he was talking about. The Nile River fed Egyptian civilization for hundreds of years. The Longest River the Nile is 4,160 miles long—the world’s longest river. It begins near the equator in Africa and flows north to the Mediterranean Sea. In the south the Nile churns with cataracts. A cataract is a waterfall. Near the sea the Nile branches into a delta. A delta is an area near a river’s mouth where the water deposits fine soil called silt. In the delta, the Nile divides into many streams. The river is called the upper Nile in the south and the lower Nile in the north. For centuries, heavy rains in Ethiopia caused the Nile to flood every summer. The floods deposited rich soil along the Nile’s shores. This soil was fertile, which means it was good for growing crops. Unlike the Tigris and Euphrates, the Nile River flooded at the same time every year, so farmers could predict when to plant their crops."
+# print(len(full_text))
+
+def solve(full_text):
+    keywords = extract_nouns(full_text) 
+    for keyword in keywords:
+        filtered_keys.append(keyword)
+    sentences = tokenize_sentences(full_text)
+    keyword_sentence_mapping = get_sentences_for_keyword(filtered_keys, sentences)
+    delete_empty=[]
+    for keyword in keyword_sentence_mapping:
+        #print(len(keyword_sentence_mapping[keyword]))
+        if(len(keyword_sentence_mapping[keyword]) == 0):
+            delete_empty.append(keyword)
+    for keyword in delete_empty:
+        del keyword_sentence_mapping[keyword]
+    key_distractor_list = {}
+
+    for keyword in keyword_sentence_mapping:
+        #print(keyword_sentence_mapping[keyword])
+        wordsense = get_wordsense(keyword_sentence_mapping[keyword][0],keyword)
+        if wordsense:
+            distractors = get_distractors_wordnet(wordsense,keyword)
+            if len(distractors) ==0:
+                distractors = get_distractors_conceptnet(keyword)
+            if len(distractors) != 0:
+                key_distractor_list[keyword] = distractors
+        else:
+            
+            distractors = get_distractors_conceptnet(keyword)
+            if len(distractors) != 0:
+                key_distractor_list[keyword] = distractors
+
+    index = 1
+    # print ("#############################################################################")
+    # print ("NOTE::::::::  Since the algorithm might have errors along the way, wrong answer choices generated might not be correct for some questions. ")
+    # print ("#############################################################################\n\n")
+    l=[]
+    for each in key_distractor_list:
+
+        Dict = {}
+        sentence = keyword_sentence_mapping[each][0]
+        pattern = re.compile(each, re.IGNORECASE)
+        output = pattern.sub( " _______ ", sentence)
+        Dict['question'] = output
+        print ("%s)"%(index),output)
+        #answer
+        Dict['answer'] = each
+        print('Answer :'+each)
+        choices = [each.capitalize()] + key_distractor_list[each]
+        top4choices = choices[:4]
+        random.shuffle(top4choices)
+        options = []
+        for choice in top4choices:
+            options.append(choice)
+        Dict['options'] = options
+        l.append(Dict)
+        optionchoices = ['a','b','c','d']
+        for idx,choice in enumerate(top4choices):
+            print ("\t",optionchoices[idx],")"," ",choice)
+        #print ("\nMore options: ", choices[4:20],"\n\n")
+        index = index + 1
+    return l
+
+
+
+    
 def extract_nouns(text):
     # Tokenize the text into words and remove punctuation and stop words
     words = [word.lower() for word in word_tokenize(text) if word.isalpha() and word.lower() not in stopwords.words("english")]
@@ -59,13 +124,8 @@ def extract_nouns(text):
     return nouns
 
 keywords=[]
-keywords = extract_nouns(full_text) 
 filtered_keys=[]
-# for keyword in keywords:
-#     if keyword.lower() in summary.lower():
-#         filtered_keys.append(keyword)
-for keyword in keywords:
-    filtered_keys.append(keyword)
+
 
 print(keywords)
 print (filtered_keys)
@@ -100,30 +160,15 @@ def get_sentences_for_keyword(keywords, sentences):
         return keyword_sentences
 
 
-sentences = tokenize_sentences(full_text)
-keyword_sentence_mapping = get_sentences_for_keyword(filtered_keys, sentences)
-        
-print (keyword_sentence_mapping)
 
-delete_empty=[]
-for keyword in keyword_sentence_mapping:
-    #print(len(keyword_sentence_mapping[keyword]))
-    if(len(keyword_sentence_mapping[keyword]) == 0):
-        delete_empty.append(keyword)
-for keyword in delete_empty:
-    del keyword_sentence_mapping[keyword]
 
 import requests
 import json
 import re
 import random
-print("#1")
 from pywsd.similarity import max_similarity
-print("#2")
 from pywsd.lesk import adapted_lesk
-print("#3")
 from nltk.corpus import wordnet as wn
-print("#4")
 
 # Distractors from Wordnet
 def get_distractors_wordnet(syn,word):
@@ -184,40 +229,5 @@ def get_distractors_conceptnet(word):
                    
     return distractor_list
 
-key_distractor_list = {}
-
-for keyword in keyword_sentence_mapping:
-    #print(keyword_sentence_mapping[keyword])
-    wordsense = get_wordsense(keyword_sentence_mapping[keyword][0],keyword)
-    if wordsense:
-        distractors = get_distractors_wordnet(wordsense,keyword)
-        if len(distractors) ==0:
-            distractors = get_distractors_conceptnet(keyword)
-        if len(distractors) != 0:
-            key_distractor_list[keyword] = distractors
-    else:
-        
-        distractors = get_distractors_conceptnet(keyword)
-        if len(distractors) != 0:
-            key_distractor_list[keyword] = distractors
-
-index = 1
-# print ("#############################################################################")
-# print ("NOTE::::::::  Since the algorithm might have errors along the way, wrong answer choices generated might not be correct for some questions. ")
-# print ("#############################################################################\n\n")
-for each in key_distractor_list:
-    sentence = keyword_sentence_mapping[each][0]
-    pattern = re.compile(each, re.IGNORECASE)
-    output = pattern.sub( " _______ ", sentence)
-    print ("%s)"%(index),output)
-    #answer
-    print('Answer :'+each)
-    choices = [each.capitalize()] + key_distractor_list[each]
-    top4choices = choices[:4]
-    random.shuffle(top4choices)
-    optionchoices = ['a','b','c','d']
-    for idx,choice in enumerate(top4choices):
-        print ("\t",optionchoices[idx],")"," ",choice)
-    #print ("\nMore options: ", choices[4:20],"\n\n")
-    index = index + 1
-
+# questions = solve(full_text)
+# print(questions)
