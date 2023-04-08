@@ -3,6 +3,9 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const dotenv = require("dotenv");
+var https = require('https');
+const {createServer}  = require('https');
+const {readFileSync} = require('fs');
 
 require('./cron.js')
 
@@ -37,11 +40,16 @@ const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server listening at http://localhost:${PORT}`);
 });
 
-var io = require('socket.io')(server, {
+const httpsServer = createServer({
+    key: readFileSync("/etc/letsencrypt/live/knowly.live/privkey.pem"),
+    cert: readFileSync("/etc/letsencrypt/live/knowly.live/fullchain.pem")
+  });
+
+var io = require('socket.io')(httpsServer, {
     pingTimeout: 60000,
     cors: {
         origin: "*"
-    }
+    },
 });
 
 let currentQuestionIndex = -1;
