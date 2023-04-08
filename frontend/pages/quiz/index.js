@@ -8,7 +8,7 @@ import { data } from 'autoprefixer'
 
 import { APIURL } from '@/constants/api'
 
-const ENDPOINT = 'http://localhost:8001'
+const ENDPOINT = 'https://knowly.live'
 
 // import  useTimer  from '@/components/common/Timer'
 
@@ -114,7 +114,7 @@ function Quiz() {
 
         socket.on('startQuiz', (data) => {
             console.log(data)
-            axios.get(`http://localhost:8001/api/v1/quiz/${data}`)
+            axios.get(`${APIURL}/quiz/${data}`)
                 .then((res) => {
                     // console.log(res.data.quiz.questions)
                     setQuestions(res.data.quiz[1]?.questions)

@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 
 import Loader from '@/components/common/Loader'
 
-const ENDPOINT = 'http://localhost:8001'
+const ENDPOINT = 'https://knowly.live'
 
 const ConductQuiz = () => {
 

@@ -1,1 +1,1 @@
-export const APIURL = "http://localhost:8001/api/v1"
+export const APIURL = "https://knowly.live/api/v1"
