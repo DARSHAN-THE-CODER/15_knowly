@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, json, session, redirect
 from flask_restful import Api, Resource
 from controller import get_ai_review, get_story, get_quizz
 #from quizz import solve
-import psycopg2
+# import psycopg2
 import yaml
 from flask_cors import CORS
 
