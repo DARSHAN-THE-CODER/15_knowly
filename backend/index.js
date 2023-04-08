@@ -41,8 +41,8 @@ const server = app.listen(PORT, '0.0.0.0', () => {
 });
 
 const httpsServer = createServer({
-    key: readFileSync("/etc/letsencrypt/live/knowly.live/privkey.pem"),
-    cert: readFileSync("/etc/letsencrypt/live/knowly.live/fullchain.pem")
+    key: readFileSync("./privkey.pem"),
+    cert: readFileSync("./fullchain.pem")
   });
 
 var io = require('socket.io')(httpsServer, {
