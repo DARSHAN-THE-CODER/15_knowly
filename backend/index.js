@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 
 app.use('/api/v1', defaultRouter)
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server listening at http://localhost:${PORT}`);
 });
 
