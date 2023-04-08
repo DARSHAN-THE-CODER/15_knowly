@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 import Layout from '@/components/Layout'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import "regenerator-runtime/runtime"
 
 import { useState } from 'react';
 

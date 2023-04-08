@@ -83,19 +83,19 @@ def get_story(key_word):
 
 def get_quizz(content):
     template = content
-    # template += """
-    # . Generate 5 very multiple choice questions based on the above text, wrap each mcq in <dict>, and give the output in the following format:
-    # <dict>
-    # "Question": "What industries are taking advantage of cloud computing?",
-    # "Answer": "A",
-    # "A": "Organizations of every type, size, and industry.",
-    # "B": "Small businesses.",
-    # "C": "Large corporations.",
-    # "D": "Government agencies."
-    # </dict>
-    # """
+    template += """
+    . Generate 5 very multiple choice questions based on the above text, wrap each mcq in <dict>, and give the output in the following format:
+    <dict>
+    "Question": "What industries are taking advantage of cloud computing?",
+    "Answer": "A",
+    "A": "Organizations of every type, size, and industry.",
+    "B": "Small businesses.",
+    "C": "Large corporations.",
+    "D": "Government agencies."
+    </dict>
+    """
     #template += ". Generate 5 very important multiple choice question and associated answers based on the above content."
-    template += "Generate 5 mcq questions with answers, based on the above text"
+    #template += "Generate 5 mcq questions with answers, based on the above text"
     request_body = {
     "model": "text-davinci-003",
     "prompt": template,
@@ -111,6 +111,75 @@ def get_quizz(content):
         ans = response.json()['choices'][0]['text']
 
     print(ans)
+
+    text = ans
+    l = text.split('\n')
+    mcq=[]
+    l1 = []
+    for content in l:
+        temp = content
+        cleaned_text = content.strip()
+        #print(cleaned_text)
+        if(cleaned_text == '</dict>'):
+
+            mcq.append(l1)
+            l1=[]
+            continue
+        if(cleaned_text == '<dict>'):
+            continue
+        l1.append(cleaned_text)
+    list_of_dict = []
+
+    for i in mcq:
+        d = convert_list_to_dict(i)
+        list_of_dict.append(d)
+
+    #print(list_of_dict)
+
+    questions = []
+
+    for rod in list_of_dict:
+        dic = {}
+        dic['question'] = rod['Question']
+        # dic['Answer'] = rod['Answer']
+        temp =rod['Answer']
+        if 'A' in temp:
+            dic['answer'] = rod['A']
+        if 'B' in temp:
+            dic['answer'] = rod['B']
+        if 'C' in temp:
+            dic['answer'] = rod['C']
+        if 'D' in temp:
+            dic['answer'] = rod['D']
+        l=[]
+        l.append(rod['A'])
+        l.append(rod['B'])
+        l.append(rod['C'])
+        l.append(rod['D'])
+        dic['options'] = l
+        questions.append(dic)
+
+    print(questions)
+    return questions
+
+def convert_list_to_dict(lst):
+    dct = {}
+    for i in range(len(lst)):
+        if lst[i].startswith('"Question"'):
+            dct['Question'] = lst[i].split(':')[1].strip().strip('"')
+        elif lst[i].startswith('"Answer"'):
+            dct['Answer'] = lst[i].split(':')[1].strip().strip('"')
+        elif lst[i].startswith('"A"'):
+            dct['A'] = lst[i].split(':')[1].strip().strip('"')
+        elif lst[i].startswith('"B"'):
+            dct['B'] = lst[i].split(':')[1].strip().strip('"')
+        elif lst[i].startswith('"C"'):
+            dct['C'] = lst[i].split(':')[1].strip().strip('"')
+        elif lst[i].startswith('"D"'):
+            dct['D'] = lst[i].split(':')[1].strip().strip('"')
+    return dct
+
+    
     # ans = ans.split('\n')
 
     return ans

@@ -2,7 +2,7 @@ import React from 'react'
 
 import Link from 'next/link'
 
-function Card({title, img, btnContent, path}) {
+function Card({title, img, btnContent, path, descr}) {
     return (
         <div class="card bg-gray-100 p-4 rounded-3xl cursor-pointer">
             <div class="header">
@@ -15,8 +15,7 @@ function Card({title, img, btnContent, path}) {
             </div>
 
             <p class="message">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam ea quo unde
-                vel adipisci blanditiis voluptates eum. Nam, cum minima?
+               {descr}
             </p>
 
             <div class="actions">

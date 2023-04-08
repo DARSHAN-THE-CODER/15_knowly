@@ -13,9 +13,41 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="h-screen">
-        Knowly
+      <main className="m-auto pt-12 flex flex-col justify-center overflow-hidden items-center h-[85vh]">
+
+        <h1 className="text-6xl font-bold text-gray-800 text-center mt-auto">
+          Knowly <span className="text-blue-500" style={{ "animation": "typing 1s steps(10, end) 1s 1 normal both, blink-caret .75s step-end infinite" }}>Learning made easy and fun</span>
+        </h1>
+        {/* <div className=''>
+          <img src='https://isminc-public-assets.s3.amazonaws.com/public/2022-01/article-page-sharing-1200x630-Edtech.png'></img>
+        </div> */}
+        <div className="flex flex-col md:flex-row flex-wrap h-full justify-center items-center justify-items-center">
+          <div className="bg-white p-4 rounded-lg shadow m-4 ">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Powerful Student Engagement</h2>
+            <p className="text-gray-700">Engaging students with fun filled activites</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow m-4 ">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">AI review</h2>
+            <p className="text-gray-700">Providing personalised reviews</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow m-4 ">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Effective revision</h2>
+            <p className="text-gray-700">Stroy telling with concepts</p>
+          </div>
+        </div>
+
       </main>
+
+      <style jsx>{`
+        @keyframes typing {
+          from { width: 0 }
+          to { width: 100% }
+        }
+        @keyframes blink-caret {
+          from, to { border-color: transparent }
+          50% { border-color: #000 }
+        }
+      `}</style>
     </>
   )
 }

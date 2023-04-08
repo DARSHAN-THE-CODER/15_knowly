@@ -70,7 +70,7 @@ function CodeQuestions() {
                 setReview(res.data.review)
                 if (process.browser) {
                     const temp = document.getElementById('knowlyreview')
-                    temp.scrollIntoView({ behavior: 'smooth' })
+                    // temp.scrollIntoView({ behavior: 'smooth' })
                     temp.innerHTML = replace(res.data.review)
                     setContent("Knowly Review")
                 }

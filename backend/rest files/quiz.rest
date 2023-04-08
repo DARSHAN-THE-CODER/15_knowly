@@ -26,6 +26,23 @@ Content-Type: application/json
     }
 }
 
+# {
+#     "data": {
+#         "title": "Cloud computing",
+#         "classCode": "ABCD123",
+#         "questions": [
+#             {
+#                 "question": "What is one use case for cloud computing?",
+#                 "options": ["Data storage.","Software development.","Data backup.","Virtual desktops."],
+#                 "answer": "Data backup."
+#             },
+#             {
+#                 "question": "What type of applications can be hosted on the cloud?",
+#                 "options": ["Customer-facing web applications.", "Data storage applications.", ]
+#             }
+#         ]
+#     }
+# }
 ### Get Quiz
 GET {{baseURL}}/ABCD123
 

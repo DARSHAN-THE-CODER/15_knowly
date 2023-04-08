@@ -20,7 +20,7 @@ const UploadComponent = ({ file, setFile, text, setText, handleSubmit }) => {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Upload Text File</h1>
+      <h1 className="text-3xl font-bold mb-6">Upload File</h1>
       <div className="mb-6">
         <input
           type="file"

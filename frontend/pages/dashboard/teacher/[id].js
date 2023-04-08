@@ -21,20 +21,23 @@ function Teacher() {
   const cardData = [
     {
       title: "Conduct Quiz",
-      img: "",
-      button: "Proceed"
+      path: "/dashboard/teacher/quiz",
+      button: "Proceed",
+      descr: "AI based quiz with instant feedback",
     },
     {
       title: "Create Assignment",
       img: "",
       button: "Proceed",
-      path: "/dashboard/teacher/assignment"
+      path: "/dashboard/teacher/assignment",
+      descr: "Personalized review for the assessments"
     },
     {
       title: "Upload notes",
       img: "",
       button: "Proceed",
-      path: "/dashboard/teacher/upload"
+      path: "/dashboard/teacher/upload",
+      descr: "Upload notes for students to access"
     }
   ]
 
@@ -61,7 +64,7 @@ function Teacher() {
         {
           cardData.map((card, index) => (
             <div className='w-[300px] m-auto'>
-              <Card title={card.title} btnContent={card.button} img={card.img} path={card?.path} />
+              <Card title={card.title} btnContent={card.button} img={card.img} path={card?.path} descr={card?.descr} />
             </div>
           ))
         }

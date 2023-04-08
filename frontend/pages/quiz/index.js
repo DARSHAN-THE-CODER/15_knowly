@@ -13,15 +13,31 @@ const ENDPOINT = 'http://localhost:8001'
 // import  useTimer  from '@/components/common/Timer'
 
 import Loader from '@/components/common/Loader'
+import Table from '@/components/common/Table'
 
 function Quiz() {
 
     const [duration, setDuration] = useState(10);
     const [isRunning, setIsRunning] = useState(false);
 
-    const [loading, setLoading ] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [id, setId] = useState(null)
-    
+    const [leaderBoard, setLeaderBoard] = useState({ status: false, data: {} })
+
+    // useEffect(() => {
+    //     axios.get(`${APIURL}/quiz/leaderboard/ABCD123`)
+    //         .then((res) => {
+    //             console.log(res.data?.leaderboard?.Response)
+    //             let temp = res.data?.leaderboard?.Response
+    //             temp?.sort((a, b) => b.score - a.score);
+    //             setLeaderBoard({ status: true, data: temp })
+    //         }).catch((err) => {
+    //             console.log(err)
+    //             toast.error("Couldnt fetch leaderboard")
+    //         })
+
+    //     setLeaderBoard({ status: true, data: data })
+    // }, [])
 
     useEffect(() => {
         let intervalId;
@@ -63,7 +79,6 @@ function Quiz() {
     const [score, setScore] = useState({ correct: 0, score: 0 })
     // console.log(APIURL)
 
-    const [ leaderBoard, setLeaderBoard ] = useState({status: false,data: {}})
 
     function handleJoinQuiz(e) {
         e.preventDefault();
@@ -102,7 +117,7 @@ function Quiz() {
             axios.get(`http://localhost:8001/api/v1/quiz/${data}`)
                 .then((res) => {
                     // console.log(res.data.quiz.questions)
-                    setQuestions(res.data.quiz[0]?.questions)
+                    setQuestions(res.data.quiz[1]?.questions)
                     setStatus(false)
                     // startTimer()
                     setLoading(false)
@@ -117,7 +132,7 @@ function Quiz() {
 
         socket.on('nextQuestion', (data) => {
             console.log(data)
-            if( prevQuestion === data ){
+            if (prevQuestion === data) {
 
             } else {
                 setSelectedIndex(null)
@@ -135,28 +150,30 @@ function Quiz() {
             toast.success("Quiz ended")
             setLoading(false)
 
-            axios.get(`${APIURL}/leaderboard/${student?.classCode}`)
-            .then((res) => {
-                console.log(res.data)
-                setLeaderBoard({status: true, data: res.data})
-            }).catch((err) => {
-                console.log(err)
-                toast.error("Couldnt fetch leaderboard")
-            })
+            axios.get(`${APIURL}/quiz/leaderboard/${student?.classCode}`)
+                .then((res) => {
+                    console.log(res.data?.leaderboard?.Response)
+                    let temp = res.data?.leaderboard?.Response
+                    temp?.sort((a, b) => b.score - a.score);
+                    setLeaderBoard({ status: true, data: temp })
+                }).catch((err) => {
+                    console.log(err)
+                    toast.error("Couldnt fetch leaderboard")
+                })
 
-            setLeaderBoard({status: true, data: data})
+            setLeaderBoard({ status: true, data: data })
         })
 
     })
 
-    console.log(score)
+    // console.log(score)
     const handleAnswerSelection = (answerIndex, answer, correctAnswer) => {
         if (selectedIndex !== null) {
             return
         }
 
         if (correctAnswer === answer) {
-            socket.emit("clicked",{id: id, student: student?.name, score: score.score + duration, correct: score.correct + 1})
+            socket.emit("clicked", { id: id, student: student?.name, score: score.score + duration, correct: score.correct + 1 })
             setScore({ correct: score.correct + 1, score: score.score + duration, studentName: student?.name })
 
         }
@@ -179,6 +196,12 @@ function Quiz() {
 
     //   console.log(questions[currentQuestion])
 
+    let headers = [
+        {
+            name: "Student Name",
+            score: "Score",
+        }
+    ]
     return (
         <div className='h-screen'>
             {
@@ -239,7 +262,7 @@ function Quiz() {
                 )
 
             }
-            <div>
+            {!leaderBoard?.status ? (<div>
                 {
 
                     <>
@@ -251,10 +274,10 @@ function Quiz() {
                                     <div
                                         key={index}
                                         className={`p-4 rounded-lg border-2 ${(selectedOption === questions[currentQuestion]?.answer && selectedIndex === index)
-                                                ? 'border-green-500'
-                                                : selectedIndex === index
-                                                    ? 'border-red-500'
-                                                    : 'border-gray-200'
+                                            ? 'border-green-500'
+                                            : selectedIndex === index
+                                                ? 'border-red-500'
+                                                : 'border-gray-200'
                                             }`}
                                     >
                                         <label className="inline-flex items-center">
@@ -272,8 +295,22 @@ function Quiz() {
                         </div>
                     </>
                 }
-            </div>
-            { loading && <Loader /> }
+            </div>) : (
+                <div className='h-screen'>
+                    <div className="bg-blue-100 p-4">
+                        <h2 className="text-2xl font-bold mb-4">Leaderboard</h2>
+                        {/* <div className="grid grid-cols-3 gap-4">
+                            {leaderBoard?.data?.map(({item}, index) => (
+                                <div key={index} className="bg-white p-4 rounded-md shadow-md">
+                                    <p className="font-bold">{item.studentName}</p>
+                                    <p className="text-gray-500">{item.score} points</p>
+                                </div>
+                            ))}
+                        </div> */}
+                    </div>
+                </div>
+            )}
+            {loading && <Loader />}
         </div>
     )
 }

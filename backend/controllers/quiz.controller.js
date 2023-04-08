@@ -7,6 +7,23 @@ const createQuiz = async (req, res) => {
         const quizData = req.body.data;
 
         // let promises = []
+        const leaderboard = await prisma.response.deleteMany({
+            where: {
+                classCode: quizData.classCode
+            }
+        })
+
+        // const deleteQuestions = await prisma.quiz.deleteMany({
+        //     where: {
+        //         classCode: quizData.classCode
+        //     },
+        //     include: {
+        //         questions: {
+        //             include: {
+        //                Option: true
+        //             }
+        //         }}
+        // })
 
         const quiz = await prisma.quiz.create({
             data: {
@@ -60,7 +77,7 @@ const createQuiz = async (req, res) => {
 
 const getQuizDetails = async (req, res) => {
     try {
-        const  {classCode} = req.params;
+        const { classCode } = req.params;
         console.log(classCode)
         const quiz = await prisma.quiz.findMany({
             where: {
@@ -83,7 +100,7 @@ const getQuizDetails = async (req, res) => {
         console.log(err)
         res.status(500).json({ message: "Internal Server Error" })
     }
-}  
+}
 
 const getLeaderBoard = async (req, res) => {
     try {
@@ -91,7 +108,7 @@ const getLeaderBoard = async (req, res) => {
 
         const leaderboard = await prisma.class.findUnique({
             where: {
-                classCode : classCode
+                classCode: classCode
             },
             include: {
                 Response: true
@@ -114,7 +131,7 @@ const deleteLeaderBoardResponses = async (req, res) => {
 
         const leaderboard = await prisma.response.deleteMany({
             where: {
-                classCode : classCode
+                classCode: classCode
             }
         })
 
