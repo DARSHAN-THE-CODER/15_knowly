@@ -8,7 +8,7 @@ import { data } from 'autoprefixer'
 
 import { APIURL } from '@/constants/api'
 
-const ENDPOINT = 'https://knowly.live/api/v1'
+const ENDPOINT = 'http://knowly.live:8001/'
 
 // import  useTimer  from '@/components/common/Timer'
 
