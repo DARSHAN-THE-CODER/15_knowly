@@ -6,9 +6,10 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { data } from 'autoprefixer'
 
-import { APIURL } from '@/constants/api'
+import { APIURL, ENDPOINT } from '@/constants/api'
 
-const ENDPOINT = 'https://knowly.live:8001/'
+// const ENDPOINT = 'https://knowly.live:8001/'
+// const ENDPOINT = 'https://localhost:8443/'
 
 // import  useTimer  from '@/components/common/Timer'
 

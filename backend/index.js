@@ -40,18 +40,12 @@ const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server listening at http://localhost:${PORT}`);
 });
 
-// const httpsServer = createServer({
-//     key: readFileSync("./privkey.pem"),
-//     cert: readFileSync("./fullchain.pem")
-//   });
-
 var io = require('socket.io')(server, {
     pingTimeout: 60000,
     cors: {
         origin: "*"
     },
 });
-
 let currentQuestionIndex = -1;
 
 io.on('connection', (socket) => {
@@ -91,7 +85,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('joinQuiz', async (data) => {
-        // console.log(`User joined with name: ${data.name} and classCode: ${data.classCode}`);
+        console.log(`User joined with name: ${data.name} and classCode: ${data.classCode}`);
 
         // socket.join(data.classCode);
         await prisma.response.create({
