@@ -40,12 +40,12 @@ const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server listening at http://localhost:${PORT}`);
 });
 
-const httpsServer = createServer({
-    key: readFileSync("./privkey.pem"),
-    cert: readFileSync("./fullchain.pem")
-  });
+// const httpsServer = createServer({
+//     key: readFileSync("./privkey.pem"),
+//     cert: readFileSync("./fullchain.pem")
+//   });
 
-var io = require('socket.io')(httpsServer, {
+var io = require('socket.io')(server, {
     pingTimeout: 60000,
     cors: {
         origin: "*"
